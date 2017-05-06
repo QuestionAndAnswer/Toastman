@@ -1,0 +1,30 @@
+{
+    // Use IntelliSense to learn about possible Node.js debug attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Target dbg",
+            "program": "${workspaceRoot}\\index.js",
+            "args": [
+                "--postman-collection-path",
+                ".\\test\\test_collection.json",
+                "--toastman-chains-path",
+                ".\\test\\test_chains.json"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Test dbg",
+            "program": "${workspaceRoot}\\test\\index.js",
+            "args": [
+                "--debug-brk"
+            ]
+        }
+    ]
+}

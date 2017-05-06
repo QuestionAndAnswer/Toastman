@@ -1,0 +1,12 @@
+{
+    "chains": [
+        {
+            "name": "chain1",
+            "requests": ["1/first", "2/second", "2/second"]
+        },
+        {
+            "name": "chain2",
+            "requests": ["1/first"]
+        }
+    ]
+}

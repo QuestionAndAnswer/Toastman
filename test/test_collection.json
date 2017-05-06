@@ -25,7 +25,7 @@
 						}
 					],
 					"request": {
-						"url": "example.com",
+						"url": "localhost:8000",
 						"method": "GET",
 						"header": [],
 						"body": {},
@@ -55,7 +55,7 @@
 						}
 					],
 					"request": {
-						"url": "wikipedia.com",
+						"url": "localhost:8000",
 						"method": "GET",
 						"header": [],
 						"body": {},

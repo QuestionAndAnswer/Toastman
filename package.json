@@ -1,10 +1,10 @@
 {
   "name": "toastman",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Chain and reuse Postman and Newman requests to cover all API usage scenarios",
   "main": "index.js",
   "scripts": {
-    "test": "mocha ./test/**/*.js"
+    "test": "mocha ./test/**/*.js --timeout 5s"
   },
   "keywords": [
     "postman",
@@ -17,6 +17,13 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.3.0"
+    "mocha": "^3.3.0",
+    "newman": "^3.5.2",
+    "shelljs": "^0.7.7"
+  },
+  "dependencies": {
+    "argparse": "^1.0.9",
+    "extend": "^3.0.1",
+    "underscore": "^1.8.3"
   }
 }
