@@ -1,6 +1,6 @@
 # Toastman
 
-Toastman is postman collection processor to extend standard postman capabilites. It allows to chain and reuse requests from postmna collection, call them in different orders to cover all API use case scenarios. It just takes original Postman collection V2, searching all the requests inside and building new fake collection that is might be passed to Newman.
+Toastman is postman collection processor that helps extend standard postman capabilites. It allows to chain and reuse requests from postmna collection, call them in different orders to cover all API use case scenarios. It just takes original Postman collection V2, searching all the requests inside and building new fake collection that is might be passed to Newman.
 
 ## Installation
 
@@ -16,8 +16,8 @@ Inside module
 
     const pathToCollection = "./myCollection.json";
     const pathToChains = "./myChains.json";
-    //this will return new collection accroding chains files
-    //you can path paths to files or objects as a parameters
+    //this will return new collection accroding chains file
+    //you can pass paths {string} or objects {object} as an arugments
     let outCollection = toastman(pathToCollection, pathToChains);
 
     //you can use this generated collection with newman as usuall
@@ -57,3 +57,7 @@ Param|Type|Description
 --|--|--
 name | string | Name of the chain
 requests| string[] | Array of the requests name. Those names should be equal to the ones that in the loaded collection. If the request are inside folder, than, you can combine it through "/". <p> <b>Example: </b> <i>Folder name:</i> "foo" <i>Request name:</i> "bar" <p> You can write as "foo/bar" into array. Take a look into example.
+
+## In progress
+
+1. Write running chain name into global vairable. It would be much easier to write special test cases for each chain in this case.
