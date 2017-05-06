@@ -1,6 +1,6 @@
 # Toastman
 
-Toastman allows reues separate requests in Postman collection and run them one by one in any order. Toastman using Newman to run all requests and working as a wrapper. So this package should not limit your usual Newman workflow, but extend it instead.
+Toastman is postman collection processor to extend standard postman capabilites. It allows to chain and reuse requests from postmna collection, call them in different orders to cover all API use case scenarios. It just takes original Postman collection V2, searching all the requests inside and building new fake collection that is might be passed to Newman.
 
 ## Installation
 
@@ -8,58 +8,52 @@ Toastman allows reues separate requests in Postman collection and run them one b
 
 ## Usage
 
-```javascript
-    let pathToCollection = "./myCollection";
-    let toastman = new Toastman(pathToCollection);
+Inside module
 
-    toastman
-        .addChain({
-            name: "chain1",
-            requests: ["folder1/myRequest1", "myRequest2", "folder1/myRequest1"]
-        })
-        .addChain({
-            name: "chain2",
-            requests: ["folder1/myRequest1"]
-        })
-        .run({
-            reporters: "cli"
-        })
-        .on("end", (err, summary) => {
-            console.log("Collection run finished");
-        });
+```javascript
+    const newman = require("newman");
+    const toastman = require("toastman");
+
+    const pathToCollection = "./myCollection.json";
+    const pathToChains = "./myChains.json";
+    //this will return new collection accroding chains files
+    //you can path paths to files or objects as a parameters
+    let outCollection = toastman(pathToCollection, pathToChains);
+
+    //you can use this generated collection with newman as usuall
+
+    newman.run({
+        collection: outCollection,
+        reporters: "cli"
+    });
 ```
 
-Toastman is a wrapper to create requests chains in Newman.
-It just takes original Postman collection V2, searching all the requests inside and building new fake collection that is passing to Newman then.
+From bash
 
-## Docs
+```bash
+    toastman 
+        --postman-collection-path path-to-postman-collection
+        --toastman-chains-path path-to-toastman-chains
+        --out-collection-path path-to-output-file
+```
+This would generate a new postman collection file according to chaining rules written inside toastman chain file. The structure of this file is simple.
 
-><b>Note:</b> Currently Postman collection support version is v2 only
-
-## `Toastman(path)`
-
-Param|Type|Description
---|--|--
-path|string|Path to collection file
-
-
-Root class to work with Toastman
-
-## `Toastman#addChain(chain)`
-
-Add chain into run.
-
-## `Toastman~chain`
-
+```json
+    {
+        "chains": [
+            {
+                "name": "chain1",
+                "requests": ["req1", "req1", "req2"]
+            },
+            {
+                "name": "chain2",
+                "requests": ["folder1/req1InsideFolder1", "folder2/request1InsideFolder2"]
+            }
+        ]
+    }
+```
+Name of the chain might be used to name your sequence test scenario.
 Param|Type|Description
 --|--|--
 name | string | Name of the chain
 requests| string[] | Array of the requests name. Those names should be equal to the ones that in the loaded collection. If the request are inside folder, than, you can combine it through "/". <p> <b>Example: </b> <i>Folder name:</i> "foo" <i>Request name:</i> "bar" <p> You can write as "foo/bar" into array. Take a look into example.
-
-## `Toastman#run()`
-
-Aim and parameters are the same as for ```Newman#run``` 
-
-## `Toastman~getFakeCollectionToRun()`
-
-Returns fake collection object with all added chains. This collection can be then passed into ```Newman#run```
