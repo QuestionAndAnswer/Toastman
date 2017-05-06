@@ -1,25 +1,47 @@
 const newman = require("newman");
 const _ = require("underscore");
 const extend = require("extend");
-
+/**
+ * Toastman class that provides basic functionality
+ * @class
+ */
 class Toastman {
     constructor (path) {
         this._collection = require(path);
         this._chains = [];
     }
 
+    /**
+     * @type Toastman~chain
+     * @property {string} name Chain's name
+     * @property {string[]} requests Requests name array to execute in this chain
+     */
+
+    /**
+     * Add ne wchain into run
+     * @param {Toastman~chain} chain New chain object
+     */
     addChain(chain) {
         this._chains.push(chain);
         return this;
     }
 
-    run(options, callback) {
+    /**
+     * Newman's run method overriding
+     * Same parameters as in original.
+     * @return {EventEmiter} Newman's EventEmiter instance
+     */
+    run(options) {
         let collectionToRun = this.getFakeCollectionToRun();
         options.collection = collectionToRun;
 
-        return newman.run(options, callback);
+        return newman.run.apply(newman, arguments);
     }
 
+    /**
+     * Returns new fake collection according to added chains.
+     * @return {Collection} New collection with all added chains on the call time 
+     */
     getFakeCollectionToRun () {
         let requestsMap = this._getNormalizedCollectionItems();
         
