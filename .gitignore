@@ -1,3 +1,4 @@
 node_modules/
 npm_debug.log
 test/custom_toastman_collection.json
+toastman_collection.json
