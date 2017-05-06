@@ -1,0 +1,69 @@
+{
+	"variables": [],
+	"info": {
+		"name": "test_collection",
+		"_postman_id": "e0a6d20e-171e-0a9c-0d16-86ccde8666af",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1",
+			"description": "",
+			"item": [
+				{
+					"name": "first",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"postman.setGlobalVariable(\"myVar\", \"10\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "example.com",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2",
+			"description": "",
+			"item": [
+				{
+					"name": "second",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let myVar = postman.getGlobalVariable(\"myVar\");",
+									"console.log(myVar);",
+									"tests[\"myVar === 10\"] = myVar === \"10\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "wikipedia.com",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

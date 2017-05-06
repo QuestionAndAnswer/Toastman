@@ -1,0 +1,22 @@
+{
+  "name": "toastman",
+  "version": "0.0.1",
+  "description": "Chain and reuse Postman and Newman requests to cover all API usage scenarios",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./test/**/*.js"
+  },
+  "keywords": [
+    "postman",
+    "newman",
+    "toastman",
+    "api",
+    "testing"
+  ],
+  "author": "Artsiom Miksiuk",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.3.0"
+  }
+}
