@@ -3,6 +3,7 @@
   "version": "0.1.1",
   "description": "Chain and reuse Postman and Newman requests to cover all API usage scenarios",
   "main": "index.js",
+  "repository": "QuestionAndAnswer/Toastman",
   "scripts": {
     "test": "mocha ./test/**/*.js --timeout 5s"
   },
