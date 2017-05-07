@@ -1,7 +1,7 @@
 {
 	"variables": [],
 	"info": {
-		"name": "test_collection",
+		"name": "test_collection.json",
 		"_postman_id": "e0a6d20e-171e-0a9c-0d16-86ccde8666af",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
@@ -20,6 +20,17 @@
 								"type": "text/javascript",
 								"exec": [
 									"postman.setGlobalVariable(\"myVar\", \"10\");"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"postman.setGlobalVariable(\"toastman-chain\", \"chain1\");",
+									"",
+									"//do some work here"
 								]
 							}
 						}

@@ -39,19 +39,58 @@ function _buildChainsCollection (requestsMap, rawCollection, chains) {
     
     chains.forEach((chain, index) => {
         let folder = {
-            name: chain.name || index,
+            name: chain.name || ("chain" + index),
             item: []
         };
 
+        //push folder into root level
         collectionToRun.item.push(folder);
 
+        //push requests into folder
         chain.requests.forEach(reqName => {
-            let reqInstance = requestsMap[reqName];
+            let reqInstance = extend(true, {}, requestsMap[reqName]);
             folder.item.push(reqInstance);
         });
+
+        //write chain name set into global variable
+        if(folder.item[0]) {
+            _writeChainNameIntoGlobalVariable(folder.item[0], folder.name);
+        }
     });
 
     return collectionToRun;
+}
+
+/**
+ * Writes postman code that set global variable toastman-chain into request object.
+ * Prerequest section of the reuqest is used.
+ * If prerequest section exist, coding will be added on the first line of the existing code.
+ * If prerequest section is not exist, it will be created and inserted into request section.
+ * @param {object} request Request object in the collection
+ * @param {string} chainName Chain name which will be written into variable
+ */
+function _writeChainNameIntoGlobalVariable (request, chainName) {
+    request.event = request.event || [];
+
+    let prerequestObj = request.event.find(event => event.listen === "prerequest");
+
+    const setupCode = [
+        "postman.setGlobalVariable(\"toastman-chain\", \"" + chainName + "\");"
+    ];
+    
+    if(!prerequestObj) {
+        prerequestObj = {
+            listen: "prerequest",
+            script: {
+                type: "text/javascript",
+                exec: []
+            }
+        };
+        request.event.push(prerequestObj);
+    }
+
+    //adding initialization code
+    prerequestObj.script.exec = setupCode.concat(prerequestObj.script.exec);
 }
 
 /**
