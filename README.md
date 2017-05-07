@@ -1,6 +1,6 @@
 # Toastman
 
-Toastman is Postman collection processor that helps extend standard postman capabilites. It allows to chain and reuse requests from Postman collection, call them in different orders to cover all API use case scenarios. It just takes original Postman collection, searching all the requests inside and building new fake collection that is might be passed to Newman.
+Toastman is Postman collection processor that repacks single requests into new collection. It allows to chain and reuse requests from Postman collection, call them in different orders to cover all API use case scenarios. It just takes original Postman collection, searching all the requests inside and building new fake collection.
 
 ## Installation
 
@@ -21,13 +21,6 @@ Toastman is Postman collection processor that helps extend standard postman capa
     //this will return new collection accroding chains file
     //you can pass paths {string} or objects {object} as an arugments
     let outCollection = toastman(pathToCollection, pathToChains);
-
-    //you can use this generated collection with newman as usuall
-
-    newman.run({
-        collection: outCollection,
-        reporters: "cli"
-    });
 ```
 
 ### From bash
@@ -38,7 +31,7 @@ Toastman is Postman collection processor that helps extend standard postman capa
         --toastman-chains-path path-to-toastman-chains
         --out-collection-path path-to-output-file
 ```
-This will generate a new postman collection file according to chaining rules written inside toastman chain file. The structure of this file is simple.
+This will generate a new Postman collection file according to chaining rules written inside toastman chain file. The structure of this file is simple.
 
 ```json
     {
@@ -67,3 +60,7 @@ There are no restrictions on code inside original Postman collection. You still 
     let chain = postman.getGlobalVariable("toastman-chain");
 
 This will return currently running chain name. Name of the chain is taken from the chain's file. So it will be the same as you called it. 
+
+## Disclaimer
+
+WORK RESULT OF THIS TOOL IS NOT GUARANTEE THAT IT WILL GENERATE VALID POSTMAN OR NEWMAN COLLECTION BECAUSE OF THE POSSIBLE INPUT VARIATIONS NUMBER. ALL THE GENERATED COLLECTIONS MIGHT NOT BE CORRECTLY CONSUMED BY POSTMAN OR NEWMAN APPLICATIONS. YOU ARE USING THIS TOOL ON YOUR OWN RISK. AUTHOR DOES NOT CALL TO USE GENERATED COLLECTIONS WITH POSTMAN OR NEWMAN APPLICATIONS. AUTHOR UNDERTAKES NO RESPONSIBILITY FOR ANY LOSS THAT YOU OR ANY THIRD PARTY MAY SUFFER DUE TO USEAGE WITH POSTMAN OR NEWMAN APPLICATIONS.
