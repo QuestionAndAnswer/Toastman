@@ -1,6 +1,6 @@
 {
   "name": "toastman",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Chain and reuse Postman and Newman requests to cover all API usage scenarios",
   "main": "index.js",
   "repository": "QuestionAndAnswer/Toastman",
