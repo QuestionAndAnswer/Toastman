@@ -8,7 +8,7 @@ Toastman is Postman collection processor that repacks single requests into new c
 
 ## Usage
 
->Current Postman supported collection version is v2
+>Current Postman supported collection version is v2. You can always use v1 to v2 converter [postman-collection-transformer](https://www.npmjs.com/package/postman-collection-transformer) in pipe with Toastman.
 
 ### Inside module
 
@@ -18,9 +18,17 @@ Toastman is Postman collection processor that repacks single requests into new c
 
     const pathToCollection = "./myCollection.json";
     const pathToChains = "./myChains.json";
+
     //this will return new collection accroding chains file
     //you can pass paths {string} or objects {object} as an arugments
     let outCollection = toastman(pathToCollection, pathToChains);
+
+    //or you can do it like that
+    const collection = require(path.resolve(pathToCollection));
+    const chains = require(path.resolve(pathToChains));
+
+    //if you need, of course
+    outCollection = toastman(collection, chains);
 ```
 
 ### From bash
@@ -49,17 +57,19 @@ This will generate a new Postman collection file according to chaining rules wri
 ```
 Name of the chain might be used to name your sequence test scenario.
 Param|Type|Description
---|--|--
+---|:---:|---
 name | string | Name of the chain
 requests| string[] | Array of the requests name. Those names should be equal to the ones that in the loaded collection. If the request are inside folder, then you can combine it through "/". <p> <b>Example: </b> <i>Folder name:</i> "foo" <i>Request name:</i> "bar" <p> You can write as "foo/bar" into array. Take a look into example.
 
 ## Writing tests inside Postman
 
-There are no restrictions on code inside original Postman collection. You still can use prerequest and test scripts for each request. Toastman adds additional global variable called `toastman-chain` that indicating which chain is currently running. You could use this variable to perform more precies testing depend from the context in which current request has been runned.
+There are no restrictions on code inside original Postman collection. You still can use prerequest and test scripts for each request. Toastman adds additional global variable called `toastman-chain` that indicating which chain is currently running. You could use this variable to perform more precies testing depend from the context in which current request has been executed.
 
     let chain = postman.getGlobalVariable("toastman-chain");
 
-This will return currently running chain name. Name of the chain is taken from the chain's file. So it will be the same as you called it. 
+This will return currently running chain name. Name of the chain is taken from the chain's file. So it will be the same as you called it.
+
+This is done by simple code inserting into each request object instance at the first line of the Pre-request section. You always can take a look at generated collection file.
 
 ## Disclaimer
 
