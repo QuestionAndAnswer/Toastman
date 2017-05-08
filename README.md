@@ -56,6 +56,7 @@ This will generate a new Postman collection file according to chaining rules wri
     }
 ```
 Name of the chain might be used to name your sequence test scenario.
+
 Param|Type|Description
 ---|:---:|---
 name | string | Name of the chain
