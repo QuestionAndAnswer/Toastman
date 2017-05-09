@@ -31,14 +31,23 @@ Toastman is Postman collection processor that repacks single requests into new c
     outCollection = toastman(collection, chains);
 ```
 
+Also you can enable verbose mode from code using `setVerbose` method
+
+```javascript
+    toastman.setVerbose(true||false);
+```
+
 ### From bash
+
+>Type toastman --help to get more information
 
 ```bash
     toastman 
-        --postman-collection-path path-to-postman-collection
-        --toastman-chains-path path-to-toastman-chains
-        --out-collection-path path-to-output-file
+        -p path-to-postman-collection
+        -t path-to-toastman-chains
+        -o path-to-output-file
 ```
+
 This will generate a new Postman collection file according to chaining rules written inside toastman chain file. The structure of this file is simple.
 
 ```json
