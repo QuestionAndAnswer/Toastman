@@ -7,6 +7,8 @@ const newman = require("newman");
 const path = require("path");
 const shell = require("shelljs");
 
+// toastman.setVerbose(true);
+
 const postmanCollectionFileName = "test_collection.json";
 const toastmanChainsFileName = "test_chains.json";
 const pathToPostmanCollection = path.resolve("test", postmanCollectionFileName);
@@ -25,8 +27,8 @@ before(() => {
 describe("Import run", () => {
     function testRun(outCollection, done) {
         assert.strictEqual(outCollection.item.length, 2, "Two chains");
-        assert.strictEqual(outCollection.item[0].item.length, 3, "Tree items in chain1");
-        assert.strictEqual(outCollection.item[1].item.length, 1, "One item in chain2");
+        assert.strictEqual(outCollection.item[0].item.length, 4, "Three items in chain1");
+        assert.strictEqual(outCollection.item[1].item.length, 2, "Two items in chain2");
 
         newman.run({
             collection: outCollection,

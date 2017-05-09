@@ -75,6 +75,31 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "3",
+			"description": "",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"let myVar = postman.getGlobalVariable(\"myVar\");",
+							"console.log(myVar);",
+							"tests[\"myVar === 10\"] = myVar === \"10\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:8000",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }

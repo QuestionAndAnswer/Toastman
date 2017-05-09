@@ -14,15 +14,17 @@
                 "--postman-collection-path",
                 ".\\test\\test_collection.json",
                 "--toastman-chains-path",
-                ".\\test\\test_chains.json"
+                ".\\test\\test_chains.json",
+                "--verbose"
             ]
         },
         {
             "type": "node",
             "request": "launch",
             "name": "Test dbg",
-            "program": "${workspaceRoot}\\test\\index.js",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "args": [
+                "${workspaceRoot}\\test\\index.js",
                 "--debug-brk"
             ]
         }

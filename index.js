@@ -1,29 +1,57 @@
 const _ = require("underscore");
 const extend = require("extend");
 
+let isVerbose = false;
+
+/**
+ * Flatten object items with renaming of the requests.
+ * Requests renamed relatively subfolders where they layed.
+ * @param {object} itemsContainer Object that has item property
+ * @param {string} [rootName] Upper level name prefix that will be used
+ * to name all requests of current level
+ * @return {object} Map of the requests grouped by their's names
+ */
+function _getRequestsMap(itemsContainer, rootName = "") {
+    //if empty data passed
+    if (!itemsContainer || !itemsContainer.item || !itemsContainer.item.length) {
+        return {};
+    }
+
+    let itemsMap = _.indexBy(itemsContainer.item, "name");
+    let toReturnMap = {};
+
+    for (let itemName in itemsMap) {
+        let item = itemsMap[itemName];
+        const normalizedName = rootName + (rootName ? "/" : "") + itemName;
+
+        //if there are inner items        
+        if (item.item) {
+            //go into recursion
+            let lowerMap = _getRequestsMap(item, normalizedName);
+            //and merge results of two levels
+            extend(toReturnMap, lowerMap);
+        } else {
+            //just assigne request directly
+            toReturnMap[normalizedName] = item;
+        }
+    }
+      
+    return toReturnMap;
+}
+
 /**
  * Flatten collection items with renaming of the requests.
  * Requests renamed relatively subfolders where they layed.
- * @param {object} rawCollection Postman raw collection object
- * @return {object} Map of the requests by their's names
+ * @param {object} rawCollection Raw collection object
+ * @return {object} Map of the requests grouped by their's names
  */
-function normalizeColletionItems (rawCollection) {
-    let foldersMap = _.indexBy(rawCollection.item, "name");
-    let toReturnMap = {};
-
-    for(let folderName in foldersMap) {
-        let folder = foldersMap[folderName];
-
-        let requestsMap = _.indexBy(folder.item, "name");
-        Object.keys(requestsMap)
-            .forEach(key => {
-                let newName = folderName + "/" + key;
-                toReturnMap[newName] = requestsMap[key];
-                toReturnMap[newName].name = newName;
-            });
+function getRequestsMap(rawCollection) {
+    let requestsMap = _getRequestsMap(rawCollection);
+    if (isVerbose) {
+        console.log("Requests found:", Object.keys(requestsMap));
     }
 
-    return toReturnMap;
+    return requestsMap;
 }
 
 /**
@@ -36,7 +64,7 @@ function normalizeColletionItems (rawCollection) {
 function _buildChainsCollection (requestsMap, rawCollection, chains) {
     let collectionToRun = extend(true, {}, rawCollection);
     collectionToRun.item = [];
-    
+
     chains.forEach((chain, index) => {
         let folder = {
             name: chain.name || ("chain" + index),
@@ -45,10 +73,16 @@ function _buildChainsCollection (requestsMap, rawCollection, chains) {
 
         //push folder into root level
         collectionToRun.item.push(folder);
-
+        
         //push requests into folder
         chain.requests.forEach(reqName => {
-            let reqInstance = extend(true, {}, requestsMap[reqName]);
+            let requestObj = requestsMap[reqName];            
+
+            if (!requestObj) {
+                console.error("Request \"" + reqName + "\" not found in postman collection");
+            }
+
+            let reqInstance = extend(true, {}, requestObj);
             folder.item.push(reqInstance);
         });
 
@@ -111,8 +145,18 @@ function buildChainsCollection (collection, chains) {
         throw new Error("Toastman chains object is empty. Check file path or file content");
     }
 
-    let requestsMap = normalizeColletionItems(collectionObj);
-    return _buildChainsCollection(requestsMap, collectionObj, chainsObj.chains);
+    let requestsMap = getRequestsMap(collectionObj);
+    let toReturn = _buildChainsCollection(requestsMap, collectionObj, chainsObj.chains);
+    return toReturn;
+}
+
+/**
+ * Enables or disables verbose mode
+ * 
+ * @param {boolean} val True to enable verbose 
+ */
+function setVerbose (val) {
+    isVerbose = val;
 }
 
 
@@ -127,11 +171,14 @@ if(require.main === module) {
         description: "Transform collection into chains"
     });
 
-    parser.addArgument("--postman-collection-path", { help: "Path to collection file", required: true });
-    parser.addArgument("--toastman-chains-path", { help: "Path to toastman file", required: true });
-    parser.addArgument("--out-collection-path", { help: "Path to output collection file", defaultValue: ".\\toastman_collection.json"});
+    parser.addArgument(["-p", "--postman-collection-path"], { help: "Path to collection file", required: true });
+    parser.addArgument(["-t", "--toastman-chains-path"], { help: "Path to toastman file", required: true });
+    parser.addArgument(["-o", "--out-collection-path"], { help: "Path to output collection file", defaultValue: ".\\toastman_collection.json" });
+    parser.addArgument("--verbose", { help: "More info during conversion" });
 
     var args = parser.parseArgs();
+
+    setVerbose(!!args.verbose);
 
     let outCollection = buildChainsCollection(path.resolve(args.postman_collection_path), path.resolve(args.toastman_chains_path));
 
@@ -142,4 +189,5 @@ if(require.main === module) {
     process.stdout.write(outPath);
 } else {
     module.exports = buildChainsCollection;
+    module.exports.setVerbose = setVerbose;
 }
