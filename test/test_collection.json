@@ -19,7 +19,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"postman.setGlobalVariable(\"myVar\", \"10\");"
+									"pm.globals.set(\"myVar\", \"10\");"
 								]
 							}
 						},
@@ -28,7 +28,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"postman.setGlobalVariable(\"toastman-chain\", \"chain1\");",
+									"pm.globals.set(\"toastman-chain\", \"chain1\");",
 									"",
 									"//do some work here"
 								]
@@ -58,7 +58,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"let myVar = postman.getGlobalVariable(\"myVar\");",
+									"let myVar = pm.globals.get(\"myVar\");",
 									"console.log(myVar);",
 									"tests[\"myVar === 10\"] = myVar === \"10\";"
 								]
@@ -85,7 +85,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"let myVar = postman.getGlobalVariable(\"myVar\");",
+							"let myVar = pm.globals.get(\"myVar\");",
 							"console.log(myVar);",
 							"tests[\"myVar === 10\"] = myVar === \"10\";"
 						]

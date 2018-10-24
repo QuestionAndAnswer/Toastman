@@ -69,7 +69,7 @@ describe("Run via CLI", () => {
         assert.isOk(outPath.indexOf("\\test\\custom_toastman_collection.json") !== -1, "Return path is wrong");
 
         let collection = require(outPath);
-        assert.isOk(collection, "Collecton not readable");
+        assert.isOk(collection, "Collection not readable");
     });
 });
 
