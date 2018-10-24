@@ -75,7 +75,7 @@ requests| string[] | Array of the requests name. Those names should be equal to 
 
 There are no restrictions on code inside original Postman collection. You still can use prerequest and test scripts for each request. Toastman adds additional global variable called `toastman-chain` that indicating which chain is currently running. You could use this variable to perform more precies testing depend from the context in which current request has been executed.
 
-    let chain = postman.getGlobalVariable("toastman-chain");
+    let chain = pm.globals.get("toastman-chain");
 
 This will return currently running chain name. Name of the chain is taken from the chain's file. So it will be the same as you called it.
 

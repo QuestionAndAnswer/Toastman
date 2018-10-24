@@ -109,7 +109,7 @@ function _writeChainNameIntoGlobalVariable (request, chainName) {
     let prerequestObj = request.event.find(event => event.listen === "prerequest");
 
     const setupCode = [
-        "postman.setGlobalVariable(\"toastman-chain\", \"" + chainName + "\");"
+        "pm.globals.set(\"toastman-chain\", \"" + chainName + "\");"
     ];
     
     if(!prerequestObj) {

@@ -7,6 +7,9 @@
   "scripts": {
     "test": "mocha ./test/**/*.js --timeout 5s"
   },
+  "bin": { 
+	"toastman": "./index.js"
+  },
   "keywords": [
     "postman",
     "newman",
